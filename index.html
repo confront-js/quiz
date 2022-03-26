@@ -56,6 +56,7 @@
 <body>
   <div id="app"></div>
   <script type="text/babel">
+    const baseUrl = 'https://letmed.app/confrontjs/'
     const Player = ({ name, fullName } = {}) => {
       return <div>
         <div>{fullName && `${fullName}` || `Gracz ${name}`}</div>
@@ -124,7 +125,7 @@
       return <div>
         <div>Dostawaj indywidualne pytania na maila co tydzień w piątek</div>
         <div>
-          <form action="mail" method="POST">
+          <form action={baseUrl + 'mail.php'} method="POST">
             <label>Twój email: <input type="email" name="email" /></label>
             <input type="submit" value="Zapisz" />
           </form>
@@ -135,7 +136,7 @@
     const Sponsors = () => {
       const [s, setSponsors] = React.useState([])
       React.useEffect(() => {
-        fetch('sponsors.json').then(r => r.json()).then(r => setSponsors(r))
+        fetch(baseUrl + 'sponsors.json').then(r => r.json()).then(r => setSponsors(r))
       }, [])
       return <div>{s.map(e => <div dangerouslySetInnerHTML={{ __html: e }}/>)}</div>
     }
@@ -156,8 +157,8 @@
         <button style={{ padding: '25px' }} onClick={() => setBattle(true)}>Wejdź w tryb quizu</button>
         <div style={{ marginTop: '120px' }}>
           <hr />
-          <Share />
-          <hr />
+          {/* <Share /> */}
+          {/* <hr /> */}
           <Newsletter />
           <hr/>
           <Sponsors/>
