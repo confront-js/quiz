@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- <script src="https://fb.me/react-15.2.0.js"></script>
+  <script src="https://fb.me/react-dom-15.2.0.js"></script> -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+    }
+    .d-flex {
+      display: flex;
+      align-items: stretch;
+    }
+    .m-10 {
+      margin: 10px;
+    }
+    .ac-m10 > * {
+      margin: 10px;
+    }
+    ol, li {
+      margin: 0px;
+      padding: 0px;
+      text-indent: 0;
+    }
+    ol {
+      padding-left: 5px;
+    }
+    .q > ol {
+      list-style: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="text/babel">
+    const HelloMessage = () => {
+      return <div>
+        <div>Quiz</div>
+        <div className="d-flex ac-m10">
+          <div>
+            <div>Gracz A</div>
+            <div>Pytanie</div>
+            <div className="q">
+              <ol type="a">
+                {[1,2,3].map(e => <li><input type="radio" name="q1"/></li>)}
+              </ol>
+            </div>
+            <button>Ok</button>
+          </div>
+          <div style={{height: '100px', border: '1px solid black'}}></div>
+          <div>
+            <div>Gracz B</div>
+            <div>Pytanie</div>
+            <div className="q">
+              <ol type="a">
+                {[1,2,3].map(e => <li><input type="radio" name="q1"/></li>)}
+              </ol>
+            </div>
+            <button>Ok</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    ReactDOM.render(<HelloMessage name="John" />, document.getElementById('app'));
+  </script>
+</body>
+
+</html>
