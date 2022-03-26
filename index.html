@@ -11,29 +11,44 @@
     * {
       box-sizing: border-box;
     }
-    body, html {
+
+    body,
+    html {
       height: 100%;
     }
+
     .d-flex {
       display: flex;
       align-items: stretch;
     }
+
     .m-10 {
       margin: 10px;
     }
-    .ac-m10 > * {
+
+    .ac-m10>* {
       margin: 10px;
     }
-    ol, li {
+
+    ol,
+    li {
       margin: 0px;
       padding: 0px;
       text-indent: 0;
     }
+
     ol {
       padding-left: 5px;
     }
-    .q > ol {
+
+    .q>ol {
       list-style: none;
+    }
+
+    @media (min-width: 640px) {
+      .lg-maxw-640 {
+        max-width: 640px;
+      }
     }
   </style>
 </head>
@@ -41,36 +56,88 @@
 <body>
   <div id="app"></div>
   <script type="text/babel">
-    const HelloMessage = () => {
+    const Quiz = ({ onExit }) => {
+      return (
+        <React.Fragment>
+          <div className="d-flex ac-m10">
+            <div>
+              <div>Gracz A</div>
+              <div>Pytanie</div>
+              <div className="q">
+                <ol type="a">
+                  {[1, 2, 3].map(e => <li><input type="radio" name="q1" /></li>)}
+                </ol>
+              </div>
+              <button>Ok</button>
+            </div>
+            <div style={{ height: '100px', border: '1px solid black' }}></div>
+            <div>
+              <div>Gracz B</div>
+              <div>Pytanie</div>
+              <div className="q">
+                <ol type="a">
+                  {[1, 2, 3].map(e => <li><input type="radio" name="q1" /></li>)}
+                </ol>
+              </div>
+              <button>Ok</button>
+            </div>
+          </div>
+          <button onClick={onExit}>Opuść tryb quizu</button>
+        </React.Fragment>
+      )
+    }
+
+    const Share = () => {
+      const [counter, setCounter] = React.useState(0)
+      const [show, setShow] = React.useState(false)
+      if (!show) {
+        return <div>
+          <button onClick={() => setShow(true)}>Zobacz wyzwanie, by dostać więcej pytań</button>
+        </div>
+      }
+      return <form>
+        <b>chcesz więcej pytań?</b>
+        <div>przekaż link znajomym <input type="text" value={document.location.href} /></div>
+        <div onClick={() => setCounter(c => c + 1)}>Liczba osób z polecenia: {counter}</div>
+      </form>
+    }
+
+    const Newsletter = () => {
       return <div>
-        <div>Quiz</div>
-        <div className="d-flex ac-m10">
-          <div>
-            <div>Gracz A</div>
-            <div>Pytanie</div>
-            <div className="q">
-              <ol type="a">
-                {[1,2,3].map(e => <li><input type="radio" name="q1"/></li>)}
-              </ol>
-            </div>
-            <button>Ok</button>
-          </div>
-          <div style={{height: '100px', border: '1px solid black'}}></div>
-          <div>
-            <div>Gracz B</div>
-            <div>Pytanie</div>
-            <div className="q">
-              <ol type="a">
-                {[1,2,3].map(e => <li><input type="radio" name="q1"/></li>)}
-              </ol>
-            </div>
-            <button>Ok</button>
-          </div>
+        <div>Dostawaj indywidualne pytania na maila co tydzień w piątek</div>
+        <div>
+          <form action="mail">
+            <label>Twój email: <input type="email" name="email" /></label>
+            <input type="submit" value="Zapisz" />
+          </form>
         </div>
       </div>
     }
 
-    ReactDOM.render(<HelloMessage name="John" />, document.getElementById('app'));
+    const Footer = () => {
+      return <div style={{position: 'fixed', bottom: '0px'}}>
+          <small>autor: AZ, ConfrontJS 2022</small>
+        </div>
+    }
+
+    const App = () => {
+      const [battle, setBattle] = React.useState(false)
+      if (battle) {
+        return <Quiz onExit={() => setBattle(false)} />
+      }
+      return (<div class="lg-maxw-640">
+        <div>Quiz</div>
+        <button style={{ padding: '25px' }} onClick={() => setBattle(true)}>Wejdź w tryb quizu</button>
+        <hr />
+        <Share />
+        <hr />
+        <Newsletter />
+        <hr />
+        <Footer/>
+      </div>)
+    }
+
+    ReactDOM.render(<App name="John" />, document.getElementById('app'));
   </script>
 </body>
 
