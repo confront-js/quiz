@@ -72,8 +72,10 @@
       const categories = ['react', 'javascript', 'typescript', 'devops']
       const [cat, setCat] = React.useState(null)
       const [currentCategory, setCurrentCategory] = React.useState(null)
+      const [noP, setNoP] = React.useState(1)
       if (!currentCategory) {
         return <div>
+          <label>Liczba graczy: <input type="number" value={noP} onChange={(ev) => setNoP(ev.target.value)}/></label>
           <div>Wybierz kategorię</div>
           <select onChange={(ev) => setCat(ev.target.value)}>
             <option readonly selected disabled>wybierz</option>
@@ -88,8 +90,11 @@
         <React.Fragment>
           <div className="d-flex ac-m10">
             <Player name="A" />
-            <div style={{ height: '100px', border: '1px solid black' }}></div>
-            <Player name="B" />
+            {Array.from(Array(Math.max(1, noP) - 1)).map(e => {
+              return <React.Fragment><div style={{ height: '100px', border: '1px solid black' }}></div>
+              <Player name="B" />
+              </React.Fragment>
+            })}
           </div>
           <button style={{ marginTop: '50px' }} onClick={onExit}>Opuść tryb quizu</button>
         </React.Fragment>
@@ -127,6 +132,14 @@
       </div>
     }
 
+    const Sponsors = () => {
+      const [s, setSponsors] = React.useState([])
+      React.useEffect(() => {
+        fetch('sponsors.json').then(r => r.json()).then(r => setSponsors(r))
+      }, [])
+      return <div>{s.map(e => <div dangerouslySetInnerHTML={{ __html: e }}/>)}</div>
+    }
+
     const Footer = () => {
       return <div style={{ position: 'fixed', bottom: '0px' }}>
         <small style={{ fontSize: '1vmin' }}>autor: AZ, ConfrontJS 2022</small>
@@ -146,6 +159,8 @@
           <Share />
           <hr />
           <Newsletter />
+          <hr/>
+          <Sponsors/>
         </div>
         <Footer />
       </div>)
