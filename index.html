@@ -56,33 +56,42 @@
 <body>
   <div id="app"></div>
   <script type="text/babel">
+    const Player = ({ name, fullName } = {}) => {
+      return <div>
+        <div>{fullName && `${fullName}` || `Gracz ${name}`}</div>
+        <div>Pytanie</div>
+        <div className="q">
+          <ol type="a">
+            {[1, 2, 3].map(e => <li><input type="radio" name="q1" /></li>)}
+          </ol>
+        </div>
+        <button>Ok</button>
+      </div>
+    }
     const Quiz = ({ onExit }) => {
+      const categories = ['react', 'javascript', 'typescript', 'devops']
+      const [cat, setCat] = React.useState(null)
+      const [currentCategory, setCurrentCategory] = React.useState(null)
+      if (!currentCategory) {
+        return <div>
+          <div>Wybierz kategorię</div>
+          <select onChange={(ev) => setCat(ev.target.value)}>
+            <option readonly selected disabled>wybierz</option>
+            {categories.map(e => <option value={e}>{e}</option>)}
+          </select>
+          <div>
+            <button disabled={!cat} onClick={() => setCurrentCategory(cat)}>Dalej</button>
+          </div>
+        </div>
+      }
       return (
         <React.Fragment>
           <div className="d-flex ac-m10">
-            <div>
-              <div>Gracz A</div>
-              <div>Pytanie</div>
-              <div className="q">
-                <ol type="a">
-                  {[1, 2, 3].map(e => <li><input type="radio" name="q1" /></li>)}
-                </ol>
-              </div>
-              <button>Ok</button>
-            </div>
+            <Player name="A" />
             <div style={{ height: '100px', border: '1px solid black' }}></div>
-            <div>
-              <div>Gracz B</div>
-              <div>Pytanie</div>
-              <div className="q">
-                <ol type="a">
-                  {[1, 2, 3].map(e => <li><input type="radio" name="q1" /></li>)}
-                </ol>
-              </div>
-              <button>Ok</button>
-            </div>
+            <Player name="B" />
           </div>
-          <button onClick={onExit}>Opuść tryb quizu</button>
+          <button style={{ marginTop: '50px' }} onClick={onExit}>Opuść tryb quizu</button>
         </React.Fragment>
       )
     }
@@ -103,10 +112,14 @@
     }
 
     const Newsletter = () => {
+      const [show, setShow] = React.useState(false)
+      if (!show) {
+        return <button onClick={() => setShow(true)}>Indywidualne pytania na maila</button>
+      }
       return <div>
         <div>Dostawaj indywidualne pytania na maila co tydzień w piątek</div>
         <div>
-          <form action="mail">
+          <form action="mail" method="POST">
             <label>Twój email: <input type="email" name="email" /></label>
             <input type="submit" value="Zapisz" />
           </form>
@@ -115,9 +128,9 @@
     }
 
     const Footer = () => {
-      return <div style={{position: 'fixed', bottom: '0px'}}>
-          <small>autor: AZ, ConfrontJS 2022</small>
-        </div>
+      return <div style={{ position: 'fixed', bottom: '0px' }}>
+        <small style={{ fontSize: '1vmin' }}>autor: AZ, ConfrontJS 2022</small>
+      </div>
     }
 
     const App = () => {
@@ -128,12 +141,13 @@
       return (<div class="lg-maxw-640">
         <div>Quiz</div>
         <button style={{ padding: '25px' }} onClick={() => setBattle(true)}>Wejdź w tryb quizu</button>
-        <hr />
-        <Share />
-        <hr />
-        <Newsletter />
-        <hr />
-        <Footer/>
+        <div style={{ marginTop: '120px' }}>
+          <hr />
+          <Share />
+          <hr />
+          <Newsletter />
+        </div>
+        <Footer />
       </div>)
     }
 
